@@ -49,8 +49,9 @@ class Inputfield extends StatelessWidget {
                   behavior: HitTestBehavior.deferToChild,
                   enableHapticFeedback: true,
                   child: Material(
+                    color: Colors.transparent,
                     child: IconButton(
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(Icons.remove),
                       onPressed: onDecrease,
                     ),
                   ),
@@ -58,7 +59,6 @@ class Inputfield extends StatelessWidget {
                 Text(
                   isTime == true ? Utils.formatSeconds(value) : value.toString(),
                   style: const TextStyle(
-                    color: Utils.primaryColor,
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),
@@ -69,6 +69,7 @@ class Inputfield extends StatelessWidget {
                   behavior: HitTestBehavior.deferToChild,
                   enableHapticFeedback: true,
                   child: Material(
+                    color: Colors.transparent,
                     child: IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: onIncrease,

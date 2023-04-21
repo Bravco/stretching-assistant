@@ -66,13 +66,13 @@ class HomePage extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.bolt,
                                     color: Utils.primaryColor,
                                   ),
                                   Text(
                                     "${training.exercises.length} ${training.exercises.length > 1 ? 'exercises' : 'exercise'}",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Utils.primaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -83,14 +83,14 @@ class HomePage extends StatelessWidget {
                               const SizedBox(width: 8),
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.timer,
                                     color: Utils.primaryColor,
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     "${training.exercises.fold(0, (total, e) => total + e.value.inSeconds) ~/ 60} minutes",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Utils.primaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,

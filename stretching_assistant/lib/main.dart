@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
-import 'package:stretching_assistant/theme.dart';
 
 // Data
 import 'package:stretching_assistant/data/trainings.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: MyTheme.themeData,
+      theme: Utils.themeData,
       home: const SafeArea(
         child: Page(),
       ),
@@ -63,7 +62,7 @@ class _PageState extends State<Page> {
           ),
         ],
         backgroundColor: Utils.secondaryBackgroundColor,
-        selectedIconTheme: const IconThemeData(
+        selectedIconTheme: IconThemeData(
           size: 32,
           color: Utils.primaryColor,
         ),

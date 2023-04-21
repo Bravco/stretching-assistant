@@ -248,7 +248,7 @@ class _TimerPageState extends State<TimerPage> {
         ),
         LinearProgressIndicator(
           value: (maxSecs - secs) / (maxSecs / 1),
-          valueColor: const AlwaysStoppedAnimation(Utils.primaryColor),
+          valueColor: AlwaysStoppedAnimation(Utils.primaryColor),
           backgroundColor: Utils.primaryBackgroundColor,
           minHeight: 3,
         ),
@@ -339,7 +339,7 @@ class _TimerPageState extends State<TimerPage> {
               horizontalAlignment: GaugeAlignment.center,
               verticalAlignment: GaugeAlignment.center,
               widget: currentLap == lapsTemp
-              ? const Icon(
+              ? Icon(
                 Icons.check,
                 size: 96,
                 color: Utils.primaryColor,
