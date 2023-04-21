@@ -7,12 +7,14 @@ import 'package:stretching_assistant/model/training.dart';
 class TrainingPreview extends StatelessWidget {
   final Training training;
   final double width, height;
+  final BorderRadiusGeometry? borderRadius;
 
   const TrainingPreview({
     super.key,
     required this.training,
     required this.width,
     required this.height,
+    this.borderRadius,
   });
 
   @override
@@ -21,6 +23,7 @@ class TrainingPreview extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
+        borderRadius: borderRadius,
         boxShadow: [Utils.boxShadow(Colors.black.withOpacity(.2))],
         image: DecorationImage(
           image: training.image,
@@ -31,6 +34,7 @@ class TrainingPreview extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
+              borderRadius: borderRadius,
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,

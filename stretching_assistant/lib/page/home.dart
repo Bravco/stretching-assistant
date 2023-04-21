@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
                 training: training,
                 width: 320,
                 height: 160,
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
           );

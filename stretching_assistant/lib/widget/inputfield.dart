@@ -39,7 +39,10 @@ class Inputfield extends StatelessWidget {
           ) : Container(),
           Container(
             width: MediaQuery.of(context).size.width / 2,
-            color: Utils.secondaryBackgroundColor,
+            decoration: BoxDecoration(
+              color: Utils.secondaryBackgroundColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

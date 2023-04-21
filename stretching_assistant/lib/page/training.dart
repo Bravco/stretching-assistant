@@ -24,6 +24,7 @@ class TrainingPage extends StatelessWidget {
           training: training,
           width: MediaQuery.of(context).size.width,
           height: 160,
+          borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
         ),
       ),
     );

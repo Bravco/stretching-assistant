@@ -49,7 +49,7 @@ class Utils {
         backgroundColor: MaterialStateProperty.all(Utils.primaryColor),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
