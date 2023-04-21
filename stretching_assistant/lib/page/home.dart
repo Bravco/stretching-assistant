@@ -7,6 +7,11 @@ import 'package:stretching_assistant/model/training.dart';
 // Data
 import 'package:stretching_assistant/data/trainings.dart';
 
+// Widget
+import 'package:stretching_assistant/widget/training_preview.dart';
+
+// Page
+import 'package:stretching_assistant/page/training.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,89 +27,14 @@ class HomePage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(training: training)));
+              },
               splashColor: Utils.primaryColorAlt,
-              child: Ink(
+              child: TrainingPreview(
+                training: training,
                 width: 320,
                 height: 160,
-                decoration: BoxDecoration(
-                  boxShadow: [Utils.boxShadow(Colors.black.withOpacity(.2))],
-                  image: DecorationImage(
-                    image: training.image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Colors.black,
-                            Colors.black.withOpacity(.1),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            training.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.bolt,
-                                    color: Utils.primaryColor,
-                                  ),
-                                  Text(
-                                    "${training.exercises.length} ${training.exercises.length > 1 ? 'exercises' : 'exercise'}",
-                                    style: TextStyle(
-                                      color: Utils.primaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 8),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.timer,
-                                    color: Utils.primaryColor,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    "${training.exercises.fold(0, (total, e) => total + e.value.inSeconds) ~/ 60} minutes",
-                                    style: TextStyle(
-                                      color: Utils.primaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
           );
