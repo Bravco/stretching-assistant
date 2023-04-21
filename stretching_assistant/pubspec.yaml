@@ -1,0 +1,55 @@
+name: stretching_assistant
+description: A new Flutter project.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  audioplayers: ^4.0.1
+  syncfusion_flutter_gauges: ^21.1.41
+  holding_gesture: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/alarm.mp3
+    - assets/default.png
+
+    - assets/fullbody.jpg
+    - assets/hamstrings.jpg
+    - assets/morning.jpg
+
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: fonts/Outfit-100.ttf
+          weight: 100
+        - asset: fonts/Outfit-200.ttf
+          weight: 200
+        - asset: fonts/Outfit-300.ttf
+          weight: 300
+        - asset: fonts/Outfit-400.ttf
+          weight: 400
+        - asset: fonts/Outfit-500.ttf
+          weight: 500
+        - asset: fonts/Outfit-600.ttf
+          weight: 600
+        - asset: fonts/Outfit-700.ttf
+          weight: 700
+        - asset: fonts/Outfit-800.ttf
+          weight: 800
+        - asset: fonts/Outfit-900.ttf
+          weight: 900
