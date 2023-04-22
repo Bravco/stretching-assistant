@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Exercise {
   final String name;
-  final AssetImage image;
+  final ImageProvider image;
 
   Exercise({
     required this.name,

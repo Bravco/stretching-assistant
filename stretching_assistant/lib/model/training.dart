@@ -5,7 +5,7 @@ import 'package:stretching_assistant/model/exercise.dart';
 
 class Training {
   final String name;
-  final AssetImage image;
+  final ImageProvider image;
   final List<MapEntry<Exercise, Duration>> exercises;
 
   Training({

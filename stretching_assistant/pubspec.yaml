@@ -25,12 +25,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/alarm.mp3
-    - assets/default.png
-
-    - assets/fullbody.jpg
-    - assets/hamstrings.jpg
-    - assets/morning.jpg
+    - assets/
 
   fonts:
     - family: Outfit

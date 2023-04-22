@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
 
-// Data
-import 'package:stretching_assistant/data/trainings.dart';
-
 // Page
 import 'package:stretching_assistant/page/home.dart';
 import 'package:stretching_assistant/page/timer/timer.dart';
@@ -17,10 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    for (var training in trainings) {
-      precacheImage(training.image, context);
-    }
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Utils.themeData,
