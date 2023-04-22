@@ -20,40 +20,37 @@ class _TimerSettingsPageState extends State<TimerSettingsPage> {
       child: Scaffold(
         appBar: AppBar(),
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 64),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Inputfield(
-                  value: laps,
-                  label: "laps",
-                  onIncrease: () => setState(() => laps != maxLaps ? laps++ : laps),
-                  onDecrease: () => setState(() => laps != 1 ? laps-- : laps),
-                ),
-                Inputfield(
-                  value: cooldownTime,
-                  isTime: true,
-                  label: "cooldown time",
-                  onIncrease: () => setState(() => cooldownTime != maxTime ? cooldownTime++ : cooldownTime),
-                  onDecrease: () => setState(() => cooldownTime != 1 ? cooldownTime-- : cooldownTime),
-                ),
-                Inputfield(
-                  value: stretchTime,
-                  isTime: true,
-                  label: "stretch time",
-                  onIncrease: () => setState(() => stretchTime != maxTime ? stretchTime++ : stretchTime),
-                  onDecrease: () => setState(() => stretchTime != 1 ? stretchTime-- : stretchTime),
-                ),
-                Inputfield(
-                  value: relaxTime,
-                  isTime: true,
-                  label: "relax time",
-                  onIncrease: () => setState(() => relaxTime != maxTime ? relaxTime++ : relaxTime),
-                  onDecrease: () => setState(() => relaxTime != 1 ? relaxTime-- : relaxTime),
-                ),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Inputfield(
+                value: laps,
+                label: "laps",
+                onIncrease: () => setState(() => laps != maxLaps ? laps++ : laps),
+                onDecrease: () => setState(() => laps != 1 ? laps-- : laps),
+              ),
+              Inputfield(
+                value: cooldownTime,
+                isTime: true,
+                label: "cooldown time",
+                onIncrease: () => setState(() => cooldownTime != maxTime ? cooldownTime++ : cooldownTime),
+                onDecrease: () => setState(() => cooldownTime != 1 ? cooldownTime-- : cooldownTime),
+              ),
+              Inputfield(
+                value: stretchTime,
+                isTime: true,
+                label: "stretch time",
+                onIncrease: () => setState(() => stretchTime != maxTime ? stretchTime++ : stretchTime),
+                onDecrease: () => setState(() => stretchTime != 1 ? stretchTime-- : stretchTime),
+              ),
+              Inputfield(
+                value: relaxTime,
+                isTime: true,
+                label: "relax time",
+                onIncrease: () => setState(() => relaxTime != maxTime ? relaxTime++ : relaxTime),
+                onDecrease: () => setState(() => relaxTime != 1 ? relaxTime-- : relaxTime),
+              ),
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
