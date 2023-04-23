@@ -2,24 +2,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
 
+// Model
+import 'package:stretching_assistant/model/training.dart';
+
 // Data
 import 'package:stretching_assistant/data/timer.dart';
-
-// Page
-import 'package:stretching_assistant/page/timer/settings.dart';
 
 // Pub
 import 'package:audioplayers/audioplayers.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class TimerPage extends StatefulWidget {
-  const TimerPage({ super.key });
+class TrainingTimerPage extends StatefulWidget {
+  final Training training;
+
+  const TrainingTimerPage({
+    super.key,
+    required this.training,
+  });
 
   @override
-  State<TimerPage> createState() => _TimerPageState();
+  State<TrainingTimerPage> createState() => _TrainingTimerPageState();
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TrainingTimerPageState extends State<TrainingTimerPage> {
   Timer? timer;
   bool isPaused = true;
 
@@ -27,7 +32,6 @@ class _TimerPageState extends State<TimerPage> {
   int currentLap = 0;
   late int lapsTmp;
   late int cooldownTimeTmp;
-  late int stretchTimeTmp;
   late int relaxTimeTmp;
   late int maxSecs = cooldownTimeTmp;
   late int secs = cooldownTimeTmp;
@@ -67,9 +71,8 @@ class _TimerPageState extends State<TimerPage> {
 
   void setupTimes() {
     setState(() {
-      lapsTmp = laps * 2;
+      lapsTmp = widget.training.exercises.length * 2;
       cooldownTimeTmp = cooldownTime * smoothener;
-      stretchTimeTmp = stretchTime * smoothener;
       relaxTimeTmp = relaxTime * smoothener;
 
       times = [];
@@ -79,7 +82,8 @@ class _TimerPageState extends State<TimerPage> {
           times.add(cooldownTimeTmp);
         } else {
           if (i % 2 != 0) {
-            times.add(stretchTimeTmp);
+            int exerciseTime = widget.training.exercises[(i-1)~/2].value.inSeconds * smoothener;
+            times.add(exerciseTime);
           } else {
             times.add(relaxTimeTmp);
           }
@@ -131,41 +135,47 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     final bool isCompleted = currentLap == lapsTmp;
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            buildTopBlock(),
-            buildMiddleBlock(),
-            Text(
-              currentLap == 0
-              ? "Get Ready"
-              : currentLap == lapsTmp
-                ? "Completed"
-                : currentLap % 2 != 0
-                  ? "Stretch"
-                  : "Relax",
-              style: TextStyle(
-                color: currentLap % 2 != 0 || currentLap == lapsTmp
-                  ? Utils.primaryColor
-                  : Utils.textColorAlt,
-                fontWeight: FontWeight.w300,
-                fontSize: 40,
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              buildTopBlock(),
+              buildMiddleBlock(),
+              currentLap % 2 != 0 ? Image(
+                image: widget.training.exercises[currentLap  ~/ 2].key.image,
+                height: 160,
+              ) : Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: Text(
+                  currentLap == 0
+                  ? "Get Ready"
+                  : currentLap == lapsTmp
+                    ? "Completed"
+                    : "Relax",
+                  style: TextStyle(
+                    color: currentLap % 2 != 0 || currentLap == lapsTmp
+                      ? Utils.primaryColor
+                      : Utils.textColorAlt,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 40,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        floatingActionButton: isCompleted
+        ? FloatingActionButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Icon(Icons.done),
+        )
+        : FloatingActionButton(
+          onPressed: () => toggleTimer(),
+          child: !isPaused ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: isCompleted
-      ? FloatingActionButton(
-        onPressed: () => restartTimer(),
-        child: const Icon(Icons.done),
-      )
-      : FloatingActionButton(
-        onPressed: () => toggleTimer(),
-        child: !isPaused ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -200,7 +210,7 @@ class _TimerPageState extends State<TimerPage> {
                 Row(
                   children: [
                     Text(
-                      "${currentLap ~/ 2}/$laps",
+                      "${currentLap ~/ 2}/${widget.training.exercises.length}",
                       style: const TextStyle(
                         color: Utils.textColor,
                         fontWeight: FontWeight.w300,
@@ -222,17 +232,9 @@ class _TimerPageState extends State<TimerPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TimerSettingsPage(),
-                          ),
-                        ).then((value) => setupTimes());
-                        restartTimer();
-                      },
-                      label: const Text("Settings"),
-                      icon: const Icon(Icons.settings),
+                      onPressed: () => Navigator.of(context).pop(),
+                      label: const Text("Give up"),
+                      icon: const Icon(Icons.stop_circle),
                     ),
                     ElevatedButton.icon(
                       onPressed: () => restartTimer(),
@@ -258,37 +260,101 @@ class _TimerPageState extends State<TimerPage> {
   Widget buildMiddleBlock() {
     return Stack(
       children: [
-        buildTimer(),
-        Positioned.fill(
+        ClipRRect(
           child: Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              onPressed: currentLap != lapsTmp
-              ? () => nextLap()
-              : null,
-              icon: Icon(
-                Icons.skip_next,
-                size: 32,
-                color: currentLap != lapsTmp
-                ? Utils.textColor
-                : Utils.textColorAlt,
+            alignment: Alignment.topCenter,
+            heightFactor: .9,
+            child: buildTimer(),
+          ),
+        ),
+        Positioned.fill(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 48),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: (currentLap+1) ~/ 2 != widget.training.exercises.length ? Padding(
+                padding: const EdgeInsets.only(top: 64),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: currentLap != lapsTmp
+                      ? () => nextLap()
+                      : null,
+                      icon: Icon(
+                        Icons.skip_next,
+                        size: 32,
+                        color: currentLap != lapsTmp
+                        ? Utils.textColor
+                        : Utils.textColorAlt,
+                      ),
+                    ),
+                    Image(
+                      image: widget.training.exercises[(currentLap+1) ~/ 2].key.image,
+                      height: 64,
+                    ),
+                  ],
+                ),
+              ) : Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  onPressed: currentLap != lapsTmp
+                  ? () => nextLap()
+                  : null,
+                  icon: Icon(
+                    Icons.skip_next,
+                    size: 32,
+                    color: currentLap != lapsTmp
+                    ? Utils.textColor
+                    : Utils.textColorAlt,
+                  ),
+                ),
               ),
             ),
           ),
         ),
         Positioned.fill(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: IconButton(
-              onPressed: currentLap != 0
-              ? () => previousLap()
-              : null,
-              icon: Icon(
-                Icons.skip_previous,
-                size: 32,
-                color: currentLap != 0
-                ? Utils.textColor
-                : Utils.textColorAlt,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 48),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ((currentLap+1) ~/ 2)-1 > 0 ? Padding(
+                padding: const EdgeInsets.only(top: 64),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: currentLap != 0
+                      ? () => previousLap()
+                      : null,
+                      icon: Icon(
+                        Icons.skip_previous,
+                        size: 32,
+                        color: currentLap != 0
+                        ? Utils.textColor
+                        : Utils.textColorAlt,
+                      ),
+                    ),
+                    Image(
+                      image: widget.training.exercises[((currentLap+1) ~/ 2)-1].key.image,
+                      height: 64,
+                    ),
+                  ],
+                ),
+              ) : Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: IconButton(
+                  onPressed: currentLap != 0
+                  ? () => previousLap()
+                  : null,
+                  icon: Icon(
+                    Icons.skip_previous,
+                    size: 32,
+                    color: currentLap != 0
+                    ? Utils.textColor
+                    : Utils.textColorAlt,
+                  ),
+                ),
               ),
             ),
           ),

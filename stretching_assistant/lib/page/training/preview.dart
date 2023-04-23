@@ -7,6 +7,9 @@ import 'package:stretching_assistant/model/training.dart';
 // Widget
 import 'package:stretching_assistant/widget/training_preview.dart';
 
+// Page
+import 'package:stretching_assistant/page/training/timer.dart';
+
 class TrainingPage extends StatelessWidget {
   final Training training;
 
@@ -28,7 +31,7 @@ class TrainingPage extends StatelessWidget {
                 training: training,
                 width: MediaQuery.of(context).size.width,
                 height: 160,
-                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
               ),
 
               for (int i = 0; i < training.exercises.length; i++) Padding(
@@ -78,7 +81,9 @@ class TrainingPage extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TrainingTimerPage(training: training),
+          )),
           child: const Icon(Icons.play_arrow),
         ),
       ),

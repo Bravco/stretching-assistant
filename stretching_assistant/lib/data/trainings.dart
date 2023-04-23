@@ -17,7 +17,7 @@ List<Training> trainings = [
     ],
   ),
   Training(
-    name: "Morning",
+    name: "Morning Routine",
     image: const AssetImage("assets/morning.jpg"),
     exercises: [
       MapEntry(exercises[0], const Duration(seconds: 60)),
@@ -27,7 +27,7 @@ List<Training> trainings = [
     ],
   ),
   Training(
-    name: "Hamstrings",
+    name: "Unlock Hamstrings",
     image: const AssetImage("assets/hamstrings.jpg"),
     exercises: [
       MapEntry(exercises[0], const Duration(seconds: 60)),

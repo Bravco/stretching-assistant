@@ -1,3 +1,5 @@
+const int smoothener = 30;
+
 const int maxLaps = 99;
 const int maxTime = 3599;
 

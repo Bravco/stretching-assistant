@@ -11,7 +11,7 @@ import 'package:stretching_assistant/data/trainings.dart';
 import 'package:stretching_assistant/widget/training_preview.dart';
 
 // Page
-import 'package:stretching_assistant/page/training.dart';
+import 'package:stretching_assistant/page/training/preview.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -30,6 +30,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(training: training)));
               },
+              borderRadius: BorderRadius.circular(8),
               splashColor: Utils.primaryColorAlt,
               child: TrainingPreview(
                 training: training,
