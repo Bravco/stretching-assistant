@@ -21,14 +21,15 @@ class TrainingPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Ink(
       width: width,
-      height: height,
+      height: training.image == null ? height / 1.2 : height,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         boxShadow: [Utils.boxShadow(Colors.black.withOpacity(.2))],
-        image: DecorationImage(
-          image: training.image,
+        color: training.image == null ? Utils.secondaryBackgroundColor : null,
+        image: training.image != null ? DecorationImage(
+          image: training.image!,
           fit: BoxFit.cover,
-        ),
+        ) : null,
       ),
       child: Stack(
         children: [
@@ -48,7 +49,7 @@ class TrainingPreview extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: training.image == null ? MainAxisAlignment.center : MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

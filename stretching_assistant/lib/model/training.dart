@@ -5,12 +5,12 @@ import 'package:stretching_assistant/model/exercise.dart';
 
 class Training {
   final String name;
-  final ImageProvider image;
   final List<MapEntry<Exercise, Duration>> exercises;
+  final ImageProvider? image;
 
   Training({
     required this.name,
-    required this.image,
     required this.exercises,
+    this.image,
   });
 }
