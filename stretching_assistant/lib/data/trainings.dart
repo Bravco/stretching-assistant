@@ -6,7 +6,7 @@ import 'package:stretching_assistant/model/training.dart';
 // Data
 import 'package:stretching_assistant/data/exercises.dart';
 
-List<Training> trainings = [
+List<Training> presetTrainings = [
   Training(
     name: "Full Body",
     image: const AssetImage("assets/fullbody.jpg"),
@@ -35,6 +35,15 @@ List<Training> trainings = [
       MapEntry(exercises[0], const Duration(seconds: 60)),
       MapEntry(exercises[0], const Duration(seconds: 60)),
       MapEntry(exercises[0], const Duration(seconds: 60)),
+      MapEntry(exercises[0], const Duration(seconds: 60)),
+    ],
+  ),
+];
+
+List<Training> customTrainings = [
+  Training(
+    name: "My Training",
+    exercises: [
       MapEntry(exercises[0], const Duration(seconds: 60)),
     ],
   ),

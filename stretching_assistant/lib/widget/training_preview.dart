@@ -19,6 +19,8 @@ class TrainingPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int duration = training.exercises.fold(0, (total, e) => total + e.value.inSeconds) ~/ 60;
+
     return Ink(
       width: width,
       height: training.image == null ? height / 1.2 : height,
@@ -87,7 +89,7 @@ class TrainingPreview extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "${training.exercises.fold(0, (total, e) => total + e.value.inSeconds) ~/ 60} minutes",
+                          "$duration ${duration == 1 ? 'minute' : 'minutes'}",
                           style: TextStyle(
                             color: Utils.primaryColor,
                             fontSize: 16,

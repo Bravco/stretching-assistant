@@ -19,34 +19,60 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: trainings.length,
-        itemBuilder: (context, i) {
-          Training training = trainings[i];
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(training: training)));
-              },
-              borderRadius: BorderRadius.circular(8),
-              splashColor: Utils.primaryColorAlt,
-              child: TrainingPreview(
-                training: training,
-                width: 320,
-                height: 160,
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          );
-        },
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 24),
+        children: [
+          buildTitle("Preset"),
+          ...presetTrainings.map((training) => buildTile(context, training)),
+          if (customTrainings.isNotEmpty) ...[
+            buildTitle("Custom"),
+            ...customTrainings.map((training) => buildTile(context, training)),
+          ],
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget buildTitle(String title) {
+    return Row(
+      children: [
+        Container(
+          width: 4,
+          height: 12,
+          color: Utils.primaryColor,
+        ),
+        const SizedBox(width: 6),
+        Text(
+          title,
+          style: TextStyle(
+            color: Utils.textColorAlt,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTile(BuildContext context, Training training) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 24),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(training: training))),
+        borderRadius: BorderRadius.circular(8),
+        splashColor: Utils.primaryColorAlt,
+        child: TrainingPreview(
+          training: training,
+          width: 320,
+          height: 160,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
     );
   }
 }
