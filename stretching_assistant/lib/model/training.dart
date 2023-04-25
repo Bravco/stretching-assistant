@@ -10,7 +10,7 @@ class Training {
 
   Training({
     required this.name,
-    this.exercises = const [],
+    required this.exercises,
     this.image,
   });
 }

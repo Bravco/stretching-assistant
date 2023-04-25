@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stretching_assistant/data/trainings.dart';
 import 'package:stretching_assistant/utils.dart';
 
 // Model
@@ -8,17 +9,32 @@ import 'package:stretching_assistant/model/training.dart';
 import 'package:stretching_assistant/widget/training_preview.dart';
 
 // Page
+import 'package:stretching_assistant/page/training/exercises.dart';
 import 'package:stretching_assistant/page/training/timer.dart';
 
-class TrainingPage extends StatelessWidget {
+class TrainingPage extends StatefulWidget {
   final Training training;
-  final bool isCustom;
+  final bool isCustom, forceEditing;
 
   const TrainingPage({
     super.key,
     required this.training,
     this.isCustom = false,
+    this.forceEditing = false,
   });
+
+  @override
+  State<TrainingPage> createState() => _TrainingPageState();
+}
+
+class _TrainingPageState extends State<TrainingPage> {
+  bool isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isEditing = widget.forceEditing;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +42,55 @@ class TrainingPage extends StatelessWidget {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          actions: isCustom ? [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          actions: widget.isCustom ? [
+            if (isEditing) IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder:(context) {
+                    return AlertDialog(
+                      title: const Text("Please confirm"),
+                      content: Text("Are you sure to delete ${widget.training.name}?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() => customTrainings.remove(widget.training));
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all(Utils.primaryColor),
+                          ),
+                          child: const Text("Yes"),
+                        ),
+                        TextButton(
+                          onPressed: () =>  Navigator.of(context).pop(),
+                          child: const Text("No"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.delete_forever),
+            ),
+            IconButton(
+              onPressed: () => setState(() => isEditing = !isEditing),
+              icon: Icon(isEditing ? Icons.save : Icons.edit),
+            ),
           ] : null,
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               TrainingPreview(
-                training: training,
+                training: widget.training,
                 width: MediaQuery.of(context).size.width,
-                height: isCustom ? 192 : 160,
+                height: widget.isCustom ? 192 : 160,
                 borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
               ),
 
-              for (int i = 0; i < training.exercises.length; i++) Padding(
+              for (int i = 0; i < widget.training.exercises.length; i++) Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Container(
                   decoration: BoxDecoration(
@@ -56,7 +106,7 @@ class TrainingPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              training.exercises[i].key.name,
+                              widget.training.exercises[i].key.name,
                               style: TextStyle(
                                 color: Utils.textColorAlt,
                                 fontSize: 16,
@@ -64,7 +114,7 @@ class TrainingPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              Utils.formatSeconds(training.exercises[i].value.inSeconds),
+                              Utils.formatSeconds(widget.training.exercises[i].value.inSeconds),
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
@@ -74,7 +124,7 @@ class TrainingPage extends StatelessWidget {
                         ),
                         Image(
                           height: 96,
-                          image: training.exercises[i].key.image,
+                          image: widget.training.exercises[i].key.image,
                           fit: BoxFit.cover,
                         ),
                       ],
@@ -87,10 +137,20 @@ class TrainingPage extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => TrainingTimerPage(training: training),
-          )),
-          child: const Icon(Icons.play_arrow),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ExercisesPage(),
+            )).then((value) {
+              if (value != null) {
+                setState(() => widget.training.exercises.add(value));
+              }
+            });
+            if (isEditing) return;
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => TrainingTimerPage(training: widget.training),
+            ));
+          },
+          child: Icon(isEditing ? Icons.add : Icons.play_arrow),
         ),
       ),
     );

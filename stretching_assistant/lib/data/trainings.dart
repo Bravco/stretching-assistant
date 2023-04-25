@@ -40,6 +40,4 @@ List<Training> presetTrainings = [
   ),
 ];
 
-List<Training> customTrainings = [
-  Training(name: "1234567890123456"),
-];
+List<Training> customTrainings = [];

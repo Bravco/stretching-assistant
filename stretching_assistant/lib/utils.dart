@@ -54,6 +54,11 @@ class Utils {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(

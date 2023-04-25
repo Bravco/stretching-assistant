@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
           String? name = await showDialog<String>(
             context: context,
             builder: (context) => AlertDialog(
+              title: const Text("Enter training title"),
               content: TextField(
                 controller: trainingNameController,
                 maxLength: 16,
@@ -68,13 +69,14 @@ class _HomePageState extends State<HomePage> {
             ),
           );
           if (name == null || name.isEmpty) return;
-          Training newTraining = Training(name: name);
+          Training newTraining = Training(name: name, exercises: []);
           setState(() {
             customTrainings.add(newTraining);
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
               training: newTraining,
               isCustom: true,
-            )));
+              forceEditing: true,
+            ))).then((value) => setState(() {}));
           });
         },
         child: const Icon(Icons.add),
@@ -111,7 +113,7 @@ class _HomePageState extends State<HomePage> {
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
           training: training,
           isCustom: isCustom,
-        ))),
+        ))).then((value) => setState(() {})),
         borderRadius: BorderRadius.circular(8),
         splashColor: Utils.primaryColorAlt,
         child: TrainingPreview(
