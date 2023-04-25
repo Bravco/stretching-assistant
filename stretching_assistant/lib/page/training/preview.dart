@@ -43,7 +43,7 @@ class _TrainingPageState extends State<TrainingPage> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           actions: widget.isCustom ? [
-            if (isEditing) IconButton(
+            IconButton(
               onPressed: () {
                 showDialog(
                   context: context,
