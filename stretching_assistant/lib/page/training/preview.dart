@@ -12,10 +12,12 @@ import 'package:stretching_assistant/page/training/timer.dart';
 
 class TrainingPage extends StatelessWidget {
   final Training training;
+  final bool isCustom;
 
   const TrainingPage({
     super.key,
     required this.training,
+    this.isCustom = false,
   });
 
   @override
@@ -23,14 +25,18 @@ class TrainingPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: isCustom ? [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          ] : null,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               TrainingPreview(
                 training: training,
                 width: MediaQuery.of(context).size.width,
-                height: 160,
+                height: isCustom ? 192 : 160,
                 borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
               ),
 

@@ -13,8 +13,21 @@ import 'package:stretching_assistant/widget/training_preview.dart';
 // Page
 import 'package:stretching_assistant/page/training/preview.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController trainingNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    trainingNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +36,47 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 24),
         children: [
           buildTitle("Preset"),
-          ...presetTrainings.map((training) => buildTile(context, training)),
+          ...presetTrainings.map((training) => buildTile(context, training, false)),
           if (customTrainings.isNotEmpty) ...[
             buildTitle("Custom"),
-            ...customTrainings.map((training) => buildTile(context, training)),
+            ...customTrainings.map((training) => buildTile(context, training, true)),
           ],
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          String? name = await showDialog<String>(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: TextField(
+                controller: trainingNameController,
+                maxLength: 16,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: "Training Title",
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(trainingNameController.text);
+                    trainingNameController.clear();
+                  },
+                  icon: const Icon(Icons.check),
+                ),
+              ],
+            ),
+          );
+          if (name == null || name.isEmpty) return;
+          Training newTraining = Training(name: name);
+          setState(() {
+            customTrainings.add(newTraining);
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
+              training: newTraining,
+              isCustom: true,
+            )));
+          });
+        },
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -59,11 +104,14 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget buildTile(BuildContext context, Training training) {
+  Widget buildTile(BuildContext context, Training training, bool isCustom) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 24),
       child: InkWell(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(training: training))),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
+          training: training,
+          isCustom: isCustom,
+        ))),
         borderRadius: BorderRadius.circular(8),
         splashColor: Utils.primaryColorAlt,
         child: TrainingPreview(

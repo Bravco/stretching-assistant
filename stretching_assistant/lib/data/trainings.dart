@@ -41,10 +41,5 @@ List<Training> presetTrainings = [
 ];
 
 List<Training> customTrainings = [
-  Training(
-    name: "My Training",
-    exercises: [
-      MapEntry(exercises[0], const Duration(seconds: 60)),
-    ],
-  ),
+  Training(name: "1234567890123456"),
 ];

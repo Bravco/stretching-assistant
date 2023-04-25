@@ -54,6 +54,14 @@ class Utils {
         ),
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          width: 2,
+          color: primaryColor,
+        ),
+      ),
+    ),
   );
 
   // Other
