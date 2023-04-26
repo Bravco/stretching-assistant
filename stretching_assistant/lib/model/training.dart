@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 // Model
-import 'package:stretching_assistant/model/exercise.dart';
+import 'package:stretching_assistant/model/duration.dart';
 
 part 'training.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class Training extends HiveObject {
   @HiveField(0)
   String name;
 
   @HiveField(1)
-  List<MapEntry<Exercise, Duration>> exercises;
+  List<MapEntry<String, DurationHive>> exercises;
 
   @HiveField(2)
   ImageProvider? image;
@@ -25,15 +25,3 @@ class Training extends HiveObject {
     this.image,
   });
 }
-
-/*class Training {
-  final String name;
-  final List<MapEntry<Exercise, Duration>> exercises;
-  final ImageProvider? image;
-
-  Training({
-    required this.name,
-    required this.exercises,
-    this.image,
-  });
-}*/

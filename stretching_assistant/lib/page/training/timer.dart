@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:stretching_assistant/data/exercises.dart';
 import 'package:stretching_assistant/utils.dart';
 
 // Model
@@ -82,7 +83,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
           times.add(cooldownTimeTmp);
         } else {
           if (i % 2 != 0) {
-            int exerciseTime = widget.training.exercises[(i-1)~/2].value.inSeconds * smoothener;
+            int exerciseTime = widget.training.exercises[(i-1)~/2].value.toDuration().inSeconds * smoothener;
             times.add(exerciseTime);
           } else {
             times.add(relaxTimeTmp);
@@ -143,7 +144,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
               buildTopBlock(),
               buildMiddleBlock(),
               currentLap % 2 != 0 ? Image(
-                image: widget.training.exercises[currentLap  ~/ 2].key.image,
+                image: exercises[widget.training.exercises[currentLap  ~/ 2].key]!.image,
                 height: 160,
               ) : Padding(
                 padding: const EdgeInsets.only(top: 32),
@@ -290,7 +291,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
                       ),
                     ),
                     Image(
-                      image: widget.training.exercises[(currentLap+1) ~/ 2].key.image,
+                      image: exercises[widget.training.exercises[(currentLap+1) ~/ 2].key]!.image,
                       height: 64,
                     ),
                   ],
@@ -336,7 +337,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
                       ),
                     ),
                     Image(
-                      image: widget.training.exercises[((currentLap+1) ~/ 2)-1].key.image,
+                      image: exercises[widget.training.exercises[((currentLap+1) ~/ 2)-1].key]!.image,
                       height: 64,
                     ),
                   ],

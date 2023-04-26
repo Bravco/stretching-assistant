@@ -5,6 +5,7 @@ import 'package:stretching_assistant/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // Model
+import 'package:stretching_assistant/model/duration.dart';
 import 'package:stretching_assistant/model/exercise.dart';
 import 'package:stretching_assistant/model/training.dart';
 
@@ -15,8 +16,9 @@ import 'package:stretching_assistant/page/timer/timer.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(DurationAdapter());
+  Hive.registerAdapter(ExerciseEntryAdapter());
   Hive.registerAdapter(TrainingAdapter());
-  await Hive.openBox<Exercise>("exercises");
   await Hive.openBox<Training>("customTrainings");
   runApp(const MyApp());
 }

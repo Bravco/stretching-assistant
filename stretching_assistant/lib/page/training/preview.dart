@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:stretching_assistant/data/trainings.dart';
+import 'package:stretching_assistant/data/exercises.dart';
 import 'package:stretching_assistant/utils.dart';
 
 // Model
 import 'package:stretching_assistant/model/training.dart';
+
+// Data
+import 'package:stretching_assistant/data/trainings.dart';
 
 // Widget
 import 'package:stretching_assistant/widget/training_preview.dart';
@@ -53,6 +56,10 @@ class _TrainingPageState extends State<TrainingPage> {
                       content: Text("Are you sure to delete ${widget.training.name}?"),
                       actions: [
                         TextButton(
+                          onPressed: () =>  Navigator.of(context).pop(),
+                          child: const Text("No"),
+                        ),
+                        TextButton(
                           onPressed: () {
                             deleteCustomTraining(widget.training);
                             Navigator.of(context).pop();
@@ -62,10 +69,6 @@ class _TrainingPageState extends State<TrainingPage> {
                             foregroundColor: MaterialStateProperty.all(Utils.primaryColor),
                           ),
                           child: const Text("Yes"),
-                        ),
-                        TextButton(
-                          onPressed: () =>  Navigator.of(context).pop(),
-                          child: const Text("No"),
                         ),
                       ],
                     );
@@ -98,7 +101,7 @@ class _TrainingPageState extends State<TrainingPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -106,7 +109,7 @@ class _TrainingPageState extends State<TrainingPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.training.exercises[i].key.name,
+                              exercises[widget.training.exercises[i].key]!.name,
                               style: TextStyle(
                                 color: Utils.textColorAlt,
                                 fontSize: 16,
@@ -114,7 +117,7 @@ class _TrainingPageState extends State<TrainingPage> {
                               ),
                             ),
                             Text(
-                              Utils.formatSeconds(widget.training.exercises[i].value.inSeconds),
+                              Utils.formatSeconds(widget.training.exercises[i].value.toDuration().inSeconds),
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
@@ -124,7 +127,7 @@ class _TrainingPageState extends State<TrainingPage> {
                         ),
                         Image(
                           height: 96,
-                          image: widget.training.exercises[i].key.image,
+                          image: exercises[widget.training.exercises[i].key]!.image,
                           fit: BoxFit.cover,
                         ),
                       ],
@@ -143,8 +146,10 @@ class _TrainingPageState extends State<TrainingPage> {
                 builder: (context) => const ExercisesPage(),
               )).then((value) {
                 if (value != null) {
-                  //widget.training.exercises.add(value);
-                  //widget.training.save();
+                  setState(() {
+                    widget.training.exercises.add(value);
+                    widget.training.save();
+                  });
                 }
               });
             } else {

@@ -19,7 +19,7 @@ class TrainingPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int duration = training.exercises.fold(0, (total, e) => total + e.value.inSeconds) ~/ 60;
+    int duration = training.exercises.fold(0, (total, e) => total + e.value.toDuration().inSeconds) ~/ 60;
 
     return Ink(
       width: width,

@@ -8,7 +8,7 @@ part of 'training.dart';
 
 class TrainingAdapter extends TypeAdapter<Training> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   Training read(BinaryReader reader) {
@@ -18,7 +18,7 @@ class TrainingAdapter extends TypeAdapter<Training> {
     };
     return Training(
       name: fields[0] as String,
-      exercises: (fields[1] as List).cast<MapEntry<Exercise, Duration>>(),
+      exercises: (fields[1] as List).cast<MapEntry<String, DurationHive>>(),
       image: fields[2] as ImageProvider<Object>?,
     );
   }
