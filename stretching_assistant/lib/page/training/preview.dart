@@ -54,7 +54,7 @@ class _TrainingPageState extends State<TrainingPage> {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            setState(() => customTrainings.remove(widget.training));
+                            deleteCustomTraining(widget.training);
                             Navigator.of(context).pop();
                             Navigator.of(context).pop();
                           },
@@ -138,17 +138,20 @@ class _TrainingPageState extends State<TrainingPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const ExercisesPage(),
-            )).then((value) {
-              if (value != null) {
-                setState(() => widget.training.exercises.add(value));
-              }
-            });
-            if (isEditing) return;
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => TrainingTimerPage(training: widget.training),
-            ));
+            if (isEditing) {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ExercisesPage(),
+              )).then((value) {
+                if (value != null) {
+                  //widget.training.exercises.add(value);
+                  //widget.training.save();
+                }
+              });
+            } else {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => TrainingTimerPage(training: widget.training),
+              ));
+            }
           },
           child: Icon(isEditing ? Icons.add : Icons.play_arrow),
         ),

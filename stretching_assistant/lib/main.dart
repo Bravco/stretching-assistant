@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
 
+// Pub
+import 'package:hive_flutter/hive_flutter.dart';
+
+// Model
+import 'package:stretching_assistant/model/exercise.dart';
+import 'package:stretching_assistant/model/training.dart';
+
 // Page
 import 'package:stretching_assistant/page/home.dart';
 import 'package:stretching_assistant/page/timer/timer.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TrainingAdapter());
+  await Hive.openBox<Exercise>("exercises");
+  await Hive.openBox<Training>("customTrainings");
   runApp(const MyApp());
 }
 
@@ -38,6 +50,12 @@ class _PageState extends State<Page> {
   ];
   
   int pageIndex = 0;
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

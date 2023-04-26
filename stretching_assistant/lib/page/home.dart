@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
 
+// Pub
+import 'package:hive_flutter/hive_flutter.dart';
+
 // Model
 import 'package:stretching_assistant/model/training.dart';
 
 // Data
+import 'package:stretching_assistant/data/boxes.dart';
 import 'package:stretching_assistant/data/trainings.dart';
 
 // Widget
@@ -37,10 +41,20 @@ class _HomePageState extends State<HomePage> {
         children: [
           buildTitle("Preset"),
           ...presetTrainings.map((training) => buildTile(context, training, false)),
-          if (customTrainings.isNotEmpty) ...[
-            buildTitle("Custom"),
-            ...customTrainings.map((training) => buildTile(context, training, true)),
-          ],
+          ValueListenableBuilder<Box<Training>>(
+            valueListenable: Boxes.getCustomTrainings().listenable(),
+            builder: (context, box, _) {
+              final customTrainings = box.values.toList().cast<Training>();
+              return Column(
+                children: [
+                  if (customTrainings.isNotEmpty) ...[
+                    buildTitle("Custom"),
+                    ...customTrainings.map((training) => buildTile(context, training, true)),
+                  ],
+                ],
+              );
+            },
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -69,9 +83,8 @@ class _HomePageState extends State<HomePage> {
             ),
           );
           if (name == null || name.isEmpty) return;
-          Training newTraining = Training(name: name, exercises: []);
+          final Training newTraining = await addCustomTraining(name: name);
           setState(() {
-            customTrainings.add(newTraining);
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
               training: newTraining,
               isCustom: true,
