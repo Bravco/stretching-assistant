@@ -83,59 +83,66 @@ class _TrainingPageState extends State<TrainingPage> {
             ),
           ] : null,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              TrainingPreview(
-                training: widget.training,
-                width: MediaQuery.of(context).size.width,
-                height: widget.isCustom ? 192 : 160,
-                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
-              ),
-
-              for (int i = 0; i < widget.training.exercises.length; i++) Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Utils.secondaryBackgroundColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              exercises[widget.training.exercises[i].key]!.name,
-                              style: TextStyle(
-                                color: Utils.textColorAlt,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+        body: AbsorbPointer(
+          absorbing: !isEditing,
+          child: ReorderableListView(
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                if (newIndex > oldIndex) newIndex--;
+                final entry = widget.training.exercises.removeAt(oldIndex);
+                widget.training.exercises.insert(newIndex, entry);
+                widget.training.save();
+              });
+            },
+            header: TrainingPreview(
+              training: widget.training,
+              width: MediaQuery.of(context).size.width,
+              height: widget.isCustom ? 192 : 160,
+              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+            ),
+            children: widget.training.exercises.map((entry) => Padding(
+              key: ValueKey(entry),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Utils.secondaryBackgroundColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            exercises[entry.key]!.name,
+                            style: TextStyle(
+                              color: Utils.textColorAlt,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
-                            Text(
-                              Utils.formatSeconds(widget.training.exercises[i].value.toDuration().inSeconds),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          ),
+                          Text(
+                            Utils.formatSeconds(entry.value.toDuration().inSeconds),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ],
-                        ),
-                        Image(
-                          height: 96,
-                          image: exercises[widget.training.exercises[i].key]!.image,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      Image(
+                        height: 96,
+                        image: exercises[entry.key]!.image,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
+            )).toList(),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
