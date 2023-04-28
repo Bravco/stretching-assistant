@@ -14,6 +14,7 @@ dependencies:
   audioplayers: ^4.0.1
   syncfusion_flutter_gauges: ^21.1.41
   holding_gesture: ^1.1.0
+  flutter_slidable: ^3.0.0
 
   hive: ^2.2.3
   hive_flutter: ^1.1.0

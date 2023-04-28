@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stretching_assistant/data/exercises.dart';
 import 'package:stretching_assistant/utils.dart';
 
+// Pub
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 // Model
 import 'package:stretching_assistant/model/training.dart';
 
@@ -104,42 +107,84 @@ class _TrainingPageState extends State<TrainingPage> {
             children: widget.training.exercises.map((entry) => Padding(
               key: ValueKey(entry),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Utils.secondaryBackgroundColor,
-                  borderRadius: BorderRadius.circular(8),
+              child: Slidable(
+                key: ValueKey(entry),
+                enabled: isEditing,
+                startActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  dismissible: DismissiblePane(onDismissed: () => setState(() {
+                    widget.training.exercises.remove(entry);
+                    widget.training.save();
+                  })),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) => setState(() {
+                        widget.training.exercises.remove(entry);
+                        widget.training.save();
+                      }),
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                  ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            exercises[entry.key]!.name,
-                            style: TextStyle(
-                              color: Utils.textColorAlt,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  dismissible: DismissiblePane(onDismissed: () => setState(() {
+                    widget.training.exercises.remove(entry);
+                    widget.training.save();
+                  })),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) => setState(() {
+                        widget.training.exercises.remove(entry);
+                        widget.training.save();
+                      }),
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                  ],
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Utils.secondaryBackgroundColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              exercises[entry.key]!.name,
+                              style: TextStyle(
+                                color: Utils.textColorAlt,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Text(
-                            Utils.formatSeconds(entry.value.toDuration().inSeconds),
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
+                            Text(
+                              Utils.formatSeconds(entry.value.toDuration().inSeconds),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Image(
-                        height: 96,
-                        image: exercises[entry.key]!.image,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
+                          ],
+                        ),
+                        Image(
+                          height: 96,
+                          image: exercises[entry.key]!.image,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
