@@ -4,10 +4,11 @@ import 'package:stretching_assistant/utils.dart';
 // Model
 import 'package:stretching_assistant/model/training.dart';
 
-class TrainingPreview extends StatelessWidget {
+class TrainingPreview extends StatefulWidget {
   final Training training;
   final double width, height;
   final BorderRadiusGeometry? borderRadius;
+  final bool editable;
 
   const TrainingPreview({
     super.key,
@@ -15,21 +16,41 @@ class TrainingPreview extends StatelessWidget {
     required this.width,
     required this.height,
     this.borderRadius,
+    this.editable = false,
   });
 
   @override
-  Widget build(BuildContext context) {
-    int duration = training.exercises.fold(0, (total, e) => total + e.value.toDuration().inSeconds) ~/ 60;
+  State<TrainingPreview> createState() => _TrainingPreviewState();
+}
 
+class _TrainingPreviewState extends State<TrainingPreview> {
+  final TextEditingController controller = TextEditingController();
+  int duration = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.training.name;
+    duration = widget.training.exercises.fold(0, (total, e) => total + e.value.toDuration().inSeconds) ~/ 60;
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Ink(
-      width: width,
-      height: training.image == null ? height / 1.2 : height,
+      width: widget.width,
+      height: widget.training.image == null ? widget.height / 1.2 : widget.height,
       decoration: BoxDecoration(
-        borderRadius: borderRadius,
+        borderRadius: widget.borderRadius,
         boxShadow: [Utils.boxShadow(Colors.black.withOpacity(.2))],
-        color: training.image == null ? Utils.secondaryBackgroundColor : null,
-        image: training.image != null ? DecorationImage(
-          image: training.image!,
+        color: widget.training.image == null ? Utils.secondaryBackgroundColor : null,
+        image: widget.training.image != null ? DecorationImage(
+          image: widget.training.image!,
           fit: BoxFit.cover,
         ) : null,
       ),
@@ -37,7 +58,7 @@ class TrainingPreview extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: borderRadius,
+              borderRadius: widget.borderRadius,
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -51,11 +72,24 @@ class TrainingPreview extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
-              mainAxisAlignment: training.image == null ? MainAxisAlignment.center : MainAxisAlignment.end,
+              mainAxisAlignment: widget.training.image == null ? MainAxisAlignment.center : MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  training.name,
+                widget.editable ? TextField(
+                  controller: controller,
+                  onSubmitted: (value) {
+                    setState(() {
+                      widget.training.name = value;
+                      widget.training.save();
+                    });
+                  },
+                  maxLength: 16,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                  ),
+                ) : Text(
+                  widget.training.name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 28,
@@ -71,7 +105,7 @@ class TrainingPreview extends StatelessWidget {
                           color: Utils.primaryColor,
                         ),
                         Text(
-                          "${training.exercises.length} ${training.exercises.length > 1 ? 'exercises' : 'exercise'}",
+                          "${widget.training.exercises.length} ${widget.training.exercises.length > 1 ? 'exercises' : 'exercise'}",
                           style: TextStyle(
                             color: Utils.primaryColor,
                             fontSize: 16,

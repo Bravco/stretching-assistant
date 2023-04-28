@@ -99,6 +99,7 @@ class _TrainingPageState extends State<TrainingPage> {
               width: MediaQuery.of(context).size.width,
               height: widget.isCustom ? 192 : 160,
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+              editable: isEditing,
             ),
             children: widget.training.exercises.map((entry) => Padding(
               key: ValueKey(entry),
