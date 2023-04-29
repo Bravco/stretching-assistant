@@ -4,5 +4,5 @@ import 'package:flutter/material.dart';
 import 'package:stretching_assistant/model/exercise.dart';
 
 Map<String, Exercise> exercises = {
-  "default": Exercise(name: "Default", image: const AssetImage("assets/default.png")),
+  "default": Exercise(name: "Default", image: const AssetImage("assets/exercises/default.png")),
 };
