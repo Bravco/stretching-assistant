@@ -9,6 +9,9 @@ import 'package:stretching_assistant/model/duration.dart';
 import 'package:stretching_assistant/model/exercise.dart';
 import 'package:stretching_assistant/model/training.dart';
 
+// Data
+import 'package:stretching_assistant/data/exercises.dart';
+
 // Page
 import 'package:stretching_assistant/page/home.dart';
 import 'package:stretching_assistant/page/timer/timer.dart';
@@ -52,6 +55,12 @@ class _PageState extends State<Page> {
   ];
   
   int pageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    loadExercises().then((value) => setState(() => exercises = value));
+  }
 
   @override
   void dispose() {

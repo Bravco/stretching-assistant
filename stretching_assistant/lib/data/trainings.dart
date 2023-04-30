@@ -7,36 +7,36 @@ import 'package:stretching_assistant/model/training.dart';
 // Data
 import 'package:stretching_assistant/data/boxes.dart';
 
-List<Training> presetTrainings = [
+final List<Training> presetTrainings = [
   Training(
     name: "Full Body",
     image: const AssetImage("assets/fullbody.jpg"),
     exercises: [
-      MapEntry("default", DurationHive(duration: 30)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 30)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 30)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 30)),
     ],
   ),
   Training(
     name: "Morning Routine",
     image: const AssetImage("assets/morning.jpg"),
     exercises: [
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
     ],
   ),
   Training(
     name: "Unlock Hamstrings",
     image: const AssetImage("assets/hamstrings.jpg"),
     exercises: [
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
-      MapEntry("default", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
+      MapEntry("Backbend Stretch", DurationHive(duration: 60)),
     ],
   ),
 ];

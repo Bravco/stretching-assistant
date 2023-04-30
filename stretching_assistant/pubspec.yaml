@@ -32,7 +32,7 @@ flutter:
 
   assets:
     - assets/
-    - assets/exercises
+    - assets/exercises/
 
   fonts:
     - family: Outfit

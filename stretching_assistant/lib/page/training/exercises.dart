@@ -57,10 +57,13 @@ class ExercisesPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Image(
-                        height: 96,
-                        image: entry.value.image,
-                        fit: BoxFit.cover,
+                      Flexible(
+                        child: Image(
+                          height: 96,
+                          width: 96,
+                          image: entry.value.image,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ],
                   ),
