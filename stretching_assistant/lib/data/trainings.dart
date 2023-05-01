@@ -51,7 +51,7 @@ final List<Training> presetTrainings = [
       MapEntry("Runner Lunge L", DurationHive(duration: 60)),
       MapEntry("Half Side Split R", DurationHive(duration: 60)),
       MapEntry("Half Side Split L", DurationHive(duration: 60)),
-      MapEntry("Seated Quad Stretch.png", DurationHive(duration: 60)),
+      MapEntry("Seated Quad Stretch", DurationHive(duration: 60)),
       MapEntry("Side Split R", DurationHive(duration: 90)),
       MapEntry("Side Split L", DurationHive(duration: 90)),
     ],
