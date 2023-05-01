@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:stretching_assistant/data/exercises.dart';
 import 'package:stretching_assistant/utils.dart';
 
 // Pub
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 // Model
+import 'package:stretching_assistant/model/duration.dart';
 import 'package:stretching_assistant/model/training.dart';
 
 // Data
+import 'package:stretching_assistant/data/exercises.dart';
 import 'package:stretching_assistant/data/trainings.dart';
 
 // Widget
@@ -86,110 +87,34 @@ class _TrainingPageState extends State<TrainingPage> {
             ),
           ] : null,
         ),
-        body: AbsorbPointer(
-          absorbing: !isEditing,
-          child: ReorderableListView(
-            onReorder: (oldIndex, newIndex) {
-              setState(() {
-                if (newIndex > oldIndex) newIndex--;
-                final entry = widget.training.exercises.removeAt(oldIndex);
-                widget.training.exercises.insert(newIndex, entry);
-                widget.training.save();
-              });
-            },
-            header: TrainingPreview(
+        body: isEditing ? ReorderableListView(
+          onReorder: (oldIndex, newIndex) {
+            setState(() {
+              if (newIndex > oldIndex) newIndex--;
+              final entry = widget.training.exercises.removeAt(oldIndex);
+              widget.training.exercises.insert(newIndex, entry);
+              widget.training.save();
+            });
+          },
+          header: TrainingPreview(
+            training: widget.training,
+            width: MediaQuery.of(context).size.width,
+            height: widget.isCustom ? 192 : 160,
+            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+            editable: isEditing,
+          ),
+          children: widget.training.exercises.map((entry) => buildTile(entry)).toList(),
+        ) : ListView(
+          padding: const EdgeInsets.only(top: 0),
+          children: [
+            TrainingPreview(
               training: widget.training,
               width: MediaQuery.of(context).size.width,
               height: widget.isCustom ? 192 : 160,
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
-              editable: isEditing,
             ),
-            children: widget.training.exercises.map((entry) => Padding(
-              key: ValueKey(entry),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Slidable(
-                key: ValueKey(entry),
-                enabled: isEditing,
-                startActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  dismissible: DismissiblePane(onDismissed: () => setState(() {
-                    widget.training.exercises.remove(entry);
-                    widget.training.save();
-                  })),
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) => setState(() {
-                        widget.training.exercises.remove(entry);
-                        widget.training.save();
-                      }),
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                    ),
-                  ],
-                ),
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  dismissible: DismissiblePane(onDismissed: () => setState(() {
-                    widget.training.exercises.remove(entry);
-                    widget.training.save();
-                  })),
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) => setState(() {
-                        widget.training.exercises.remove(entry);
-                        widget.training.save();
-                      }),
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                    ),
-                  ],
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Utils.secondaryBackgroundColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              exercises[entry.key]!.name,
-                              style: TextStyle(
-                                color: Utils.textColorAlt,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              Utils.formatSeconds(entry.value.toDuration().inSeconds),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Image(
-                          height: 96,
-                          image: exercises[entry.key]!.image,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )).toList(),
-          ),
+            ...widget.training.exercises.map((entry) => buildTile(entry)),
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
@@ -212,6 +137,97 @@ class _TrainingPageState extends State<TrainingPage> {
             }
           },
           child: Icon(isEditing ? Icons.add : Icons.play_arrow),
+        ),
+      ),
+    );
+  }
+
+  Widget buildTile(MapEntry<String, DurationHive> entry) {
+    return Padding(
+      key: ValueKey(entry),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Slidable(
+        key: ValueKey(entry),
+        enabled: isEditing,
+        startActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          dismissible: DismissiblePane(onDismissed: () => setState(() {
+            widget.training.exercises.remove(entry);
+            widget.training.save();
+          })),
+          children: [
+            SlidableAction(
+              onPressed: (context) => setState(() {
+                widget.training.exercises.remove(entry);
+                widget.training.save();
+              }),
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          dismissible: DismissiblePane(onDismissed: () => setState(() {
+            widget.training.exercises.remove(entry);
+            widget.training.save();
+          })),
+          children: [
+            SlidableAction(
+              onPressed: (context) => setState(() {
+                widget.training.exercises.remove(entry);
+                widget.training.save();
+              }),
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Utils.secondaryBackgroundColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      exercises[entry.key]!.name,
+                      style: TextStyle(
+                        color: Utils.textColorAlt,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      Utils.formatSeconds(entry.value.toDuration().inSeconds),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: Image(
+                    height: 96,
+                    width: 96,
+                    image: exercises[entry.key]!.image,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

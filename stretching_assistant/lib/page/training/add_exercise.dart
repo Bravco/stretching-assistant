@@ -41,10 +41,13 @@ class _AddExercisePageState extends State<AddExercisePage> {
                 ),
               ),
               const SizedBox(height: 16),
-              Image(
-                height: 192,
-                image: widget.exercise.image,
-                fit: BoxFit.cover,
+              Flexible(
+                child: Image(
+                  height: 192,
+                  width: 256,
+                  image: widget.exercise.image,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(height: 32),
               Inputfield(
