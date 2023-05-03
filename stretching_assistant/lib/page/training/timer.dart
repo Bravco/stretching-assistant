@@ -292,7 +292,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
                     ),
                     Image(
                       image: exercises[widget.training.exercises[(currentLap+1) ~/ 2].key]!.image,
-                      height: 64,
+                      width: 64,
                     ),
                   ],
                 ),
@@ -338,7 +338,7 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
                     ),
                     Image(
                       image: exercises[widget.training.exercises[((currentLap+1) ~/ 2)-1].key]!.image,
-                      height: 64,
+                      width: 64,
                     ),
                   ],
                 ),
