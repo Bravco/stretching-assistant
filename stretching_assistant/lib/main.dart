@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:stretching_assistant/utils.dart';
+import 'package:stretching_assistant/ads.dart';
 
 // Pub
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,6 +25,7 @@ void main() async {
   Hive.registerAdapter(ExerciseEntryAdapter());
   Hive.registerAdapter(TrainingAdapter());
   await Hive.openBox<Training>("customTrainings");
+  MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
@@ -59,6 +62,7 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
+    createInterstitialAd();
     loadExercises().then((value) => setState(() => exercises = value));
   }
 
@@ -95,6 +99,7 @@ class _PageState extends State<Page> {
         currentIndex: pageIndex,
         onTap: (int index) {
           setState(() => pageIndex = index);
+          showInterstitialAd();
         },
         showSelectedLabels: false,
         showUnselectedLabels: false,
