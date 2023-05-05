@@ -7,9 +7,7 @@ InterstitialAd? _interstitialAd;
 
 void createInterstitialAd() {
   InterstitialAd.load(
-    //adUnitId: "ca-app-pub-3771578621008026/6532399897", // Mine
-    adUnitId: "	ca-app-pub-3940256099942544/1033173712", // Interstitial
-    //adUnitId: "ca-app-pub-3940256099942544/8691691433"; // Interstitial Video
+    adUnitId: "ca-app-pub-3771578621008026/6532399897",
     request: const AdRequest(),
     adLoadCallback: InterstitialAdLoadCallback(
       onAdLoaded: (ad) => _interstitialAd = ad,

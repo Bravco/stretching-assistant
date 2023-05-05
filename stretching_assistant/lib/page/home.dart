@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stretching_assistant/utils.dart';
+import 'package:stretching_assistant/ads.dart';
 
 // Pub
 import 'package:hive_flutter/hive_flutter.dart';
@@ -89,7 +90,10 @@ class _HomePageState extends State<HomePage> {
               training: newTraining,
               isCustom: true,
               forceEditing: true,
-            ))).then((value) => setState(() {}));
+            ))).then((value) {
+               setState(() {});
+               showInterstitialAd();
+            });
           });
         },
         child: const Icon(Icons.add),
@@ -126,7 +130,10 @@ class _HomePageState extends State<HomePage> {
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrainingPage(
           training: training,
           isCustom: isCustom,
-        ))).then((value) => setState(() {})),
+        ))).then((value) {
+          setState(() {});
+          showInterstitialAd();
+        }),
         borderRadius: BorderRadius.circular(8),
         splashColor: Utils.primaryColorAlt,
         child: TrainingPreview(

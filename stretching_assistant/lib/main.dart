@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:stretching_assistant/utils.dart';
 import 'package:stretching_assistant/ads.dart';
 
 // Pub
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // Model
 import 'package:stretching_assistant/model/duration.dart';
@@ -99,7 +99,7 @@ class _PageState extends State<Page> {
         currentIndex: pageIndex,
         onTap: (int index) {
           setState(() => pageIndex = index);
-          showInterstitialAd();
+          showInterstitialAd(random: true, probability: 1/2);
         },
         showSelectedLabels: false,
         showUnselectedLabels: false,
