@@ -46,12 +46,8 @@ class _TrainingTimerPageState extends State<TrainingTimerPage> {
         if (secs > 0 && currentLap != lapsTmp) {
           setState(() => secs--);
           if (secs == 0) {
-            currentLap++;
+            nextLap();
             AudioPlayer().play(AssetSource("alarm.mp3"));
-            if (currentLap < times.length - 1) {
-              secs = times[currentLap];
-              maxSecs = times[currentLap];
-            }
           }
         }
 
